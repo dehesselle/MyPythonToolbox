@@ -1,5 +1,27 @@
-# inspired by
+################################################################################
+#
+# *** You should tread carefully whenever you're about to use somebody else's
+# code that does something with encryption! ***
+#
+# Inspired by
 # https://nitratine.net/blog/post/encryption-and-decryption-in-python
+# I think I'm doing ok here, but I'm neither a security expert nor do I have
+# to protect state secrets with my code.
+#
+# *** You have been warned! ***
+#
+################################################################################
+#
+# What this code is supposed to do:
+#   - generate a (randomly) salted encryption key from a user-given password
+#   - use that key to encrypt a piece of text
+#   - prepend the salt to the encrypted result so that the key can be 
+#     regenerated later (together with the correct password of course)
+#     for decryption
+#
+# Intended usage is to have a way to not store e.g. credentials in clear
+# text to configurations files etc.
+
 
 from base64 import b64decode, b64encode
 from cryptography.fernet import Fernet
