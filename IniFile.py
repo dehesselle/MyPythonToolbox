@@ -21,7 +21,10 @@ class IniFile:
             raise ValueError("filename required")
 
         self.filename = os.path.basename(filename)
-        self.directory = os.getenv("XDG_CONFIG_HOME")
+        self.directory = os.path.dirname(filename)
+
+        if not self.directory:
+            self.directory = os.getenv("XDG_CONFIG_HOME")
 
         # prefer XDG_CONFIG_HOME over HOME
         if self.directory:
