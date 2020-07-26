@@ -7,12 +7,13 @@
 #   ini["mysection"] = {}
 #   ini["mysection"]["mykey"] = "myvalue"
 
+
 import configparser
 import os
 import errno
-import pathlib
-from . import touch
+from pathlib import Path
 import atexit
+from xdg import XDG_CONFIG_HOME
 
 
 class IniFile:
@@ -20,40 +21,27 @@ class IniFile:
         if not filename:
             raise ValueError("filename required")
 
-        self.filename = os.path.basename(filename)
-        self.directory = os.path.dirname(filename)
+        self.file = Path(filename)
 
-        if not self.directory:
-            self.directory = os.getenv("XDG_CONFIG_HOME")
+        if self.file.parent == Path():  # no directory has been specified
+            self.file = XDG_CONFIG_HOME.joinpath(self.file)
 
-        # prefer XDG_CONFIG_HOME over HOME
-        if self.directory:
-            # create if not exists
-            if not os.path.isdir(self.directory):
-                os.makedirs(self.directory)
-        else:
-            # last resort: use HOME
-            self.directory = str(pathlib.Path.home())
+        if not self.file.exists():
+            if create:
+                self.file.touch()
+            else:
+                raise FileNotFoundError(errno.ENOENT, os.strerror(errno.ENOENT), self.file)
 
         self.configParser = configparser.ConfigParser()
-
-        ini_file = self.directory + "/" + self.filename
-        if not os.path.exists(ini_file):
-            if create:
-                touch.touch(ini_file)
-            else:
-                raise FileNotFoundError(errno.ENOENT, os.strerror(errno.ENOENT), ini_file)
-
-        self.configParser.read(ini_file)
+        self.configParser.read(self.file)
         atexit.register(self.save)  # save ini
 
     def save(self):
         try:
-            ini_file = self.directory + "/" + self.filename
-            with open(ini_file, "w") as config:
+            with open(self.file, "w") as config:
                 self.configParser.write(config)
         except OSError as e:
-            print("unable to save:", ini_file)
+            print("unable to save:", self.file)
 
     def __getitem__(self, item):
         return self.configParser[item]
