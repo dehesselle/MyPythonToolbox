@@ -1,3 +1,12 @@
+# SPDX-License-Identifier: MIT
+# https://github.com/dehesselle/MyPythonToolbox
+
+# usage:
+#
+#   ini = IniFile.IniFile("test.ini")
+#   ini["mysection"] = {}
+#   ini["mysection"]["mykey"] = "myvalue"
+
 import configparser
 import os
 import errno
@@ -54,10 +63,3 @@ class IniFile:
             self.configParser[item1] = item2
         else:
             self.configParser[item1][item2] = item3
-
-#   example code:
-#
-#   ini = IniFile.IniFile("test.ini")
-#   ini["mysection"] = {}
-#   ini["mysection"]["mykey"] = "myvalue"
-

@@ -1,17 +1,20 @@
+# SPDX-License-Identifier: MIT
+# https://github.com/dehesselle/MyPythonToolbox
+
 ################################################################################
 #
-# *** You should tread carefully whenever you're about to use somebody else's
-# code that does something with encryption! ***
+#      *** You should tread carefully whenever you're about to use
+#          somebody else's code that does something with encryption! ***
 #
 # Inspired by
 # https://nitratine.net/blog/post/encryption-and-decryption-in-python
 # I think I'm doing ok here, but I'm neither a security expert nor do I have
 # to protect state secrets with my code.
 #
-# *** You have been warned! ***
+#                       *** You have been warned! ***
 #
 ################################################################################
-#
+
 # What this code is supposed to do:
 #   - generate a (randomly) salted encryption key from a user-given password
 #   - use that key to encrypt a piece of text
