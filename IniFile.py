@@ -11,7 +11,7 @@ import configparser
 import os
 import errno
 import pathlib
-from touch import touch
+from . import touch
 import atexit
 
 
@@ -40,7 +40,7 @@ class IniFile:
         ini_file = self.directory + "/" + self.filename
         if not os.path.exists(ini_file):
             if create:
-                touch(ini_file)
+                touch.touch(ini_file)
             else:
                 raise FileNotFoundError(errno.ENOENT, os.strerror(errno.ENOENT), ini_file)
 
