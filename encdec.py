@@ -34,7 +34,7 @@ from cryptography.hazmat.primitives.kdf.pbkdf2 import PBKDF2HMAC
 from os import urandom
 
 
-def generate_key(password: str, salt: bytes):
+def generate_key(password: str, salt: bytes) -> str:
     password = password.encode()
     kdf = PBKDF2HMAC(
         algorithm=hashes.SHA256(),
